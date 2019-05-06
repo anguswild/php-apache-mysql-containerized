@@ -1,7 +1,7 @@
-version: "3.2"
+version: "3.7"
 services:
   php:
-    build: 
+    build:
       context: './php/'
       args:
        PHP_VERSION: ${PHP_VERSION}
@@ -9,7 +9,7 @@ services:
       - backend
     volumes:
       - ${PROJECT_ROOT}/:/var/www/html/
-    container_name: php
+    container_name: php_test1
   apache:
     build:
       context: './apache/'
@@ -22,15 +22,15 @@ services:
       - frontend
       - backend
     ports:
-      - "80:80"
+      - "8181:80"
     volumes:
       - ${PROJECT_ROOT}/:/var/www/html/
-    container_name: apache
+    container_name: apache_test1
   mysql:
     image: mysql:${MYSQL_VERSION:-latest}
     restart: always
     ports:
-      - "3306:3306"
+      - "3316:3306"
     volumes:
             - data:/var/lib/mysql
     networks:
@@ -40,7 +40,7 @@ services:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
-    container_name: mysql
+    container_name: mysql_test1
 networks:
   frontend:
   backend:
