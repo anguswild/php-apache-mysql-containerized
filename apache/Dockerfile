@@ -1,5 +1,8 @@
-ARG APACHE_VERSION=""
-FROM httpd:${APACHE_VERSION:+${APACHE_VERSION}-}alpine
+FROM httpd:2.4-alpine
+
+## Comment this if you dont have a proxy
+ENV HTTP_PROXY http://168.88.170.2:8000
+ENV HTTPS_PROXY http://168.88.170.2:8000
 
 RUN apk update; \
     apk upgrade;

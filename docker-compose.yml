@@ -4,17 +4,23 @@ services:
     build:
       context: './php/'
       args:
-       PHP_VERSION: ${PHP_VERSION}
+       PHP_VERSION: 7.3
     networks:
       - backend
     volumes:
-      - ${PROJECT_ROOT}/:/var/www/html/
-    container_name: php_test1
+      - ./public_html/:/var/www/html/
+    restart: unless-stopped
+    container_name: php_test
+  composer:
+    image: composer/composer:php7
+    command: install
+    volumes:
+      - ./public_html/:/var/www/html/
   apache:
     build:
       context: './apache/'
       args:
-       APACHE_VERSION: ${APACHE_VERSION}
+       APACHE_VERSION: 2.4
     depends_on:
       - php
       - mysql
@@ -24,10 +30,11 @@ services:
     ports:
       - "8181:80"
     volumes:
-      - ${PROJECT_ROOT}/:/var/www/html/
-    container_name: apache_test1
+      - ./public_html/:/var/www/html/
+    restart: unless-stopped
+    container_name: apache_test
   mysql:
-    image: mysql:${MYSQL_VERSION:-latest}
+    image: mysql:5.7
     restart: always
     ports:
       - "3316:3306"
@@ -36,11 +43,11 @@ services:
     networks:
       - backend
     environment:
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-      MYSQL_DATABASE: "${DB_NAME}"
-      MYSQL_USER: "${DB_USERNAME}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-    container_name: mysql_test1
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+      MYSQL_DATABASE: "dbtest"
+      MYSQL_USER: "otherUser"
+      MYSQL_PASSWORD: "password"
+    container_name: mysql
 networks:
   frontend:
   backend:
