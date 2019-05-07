@@ -16,6 +16,8 @@ services:
     command: install
     volumes:
       - ./public_html/:/var/www/html/
+    restart: unless-stopped
+    container_name: php_composer
   apache:
     build:
       context: './apache/'
